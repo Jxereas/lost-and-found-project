@@ -1,0 +1,29 @@
+# Virtual environment (Python package installations)
+.venv/
+venv/
+env/
+
+#Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Django secret / env file
+.env
+
+# Node dependencies
+node_modules/
+
+# Vite build output
+dist/
+
+# VSCode
+.vscode/
+
+# JetBrains / PyCharm
+.idea/
+
+# Coverage reports
+coverage/
+*.log
+*.tmp
