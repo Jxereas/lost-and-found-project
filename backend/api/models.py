@@ -9,8 +9,7 @@ from django.db import models
 
 
 class Administrator(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    personid = models.ForeignKey('Person', models.DO_NOTHING, db_column='PersonID')  # Field name made lowercase.
+    id = models.OneToOneField('Person', models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
     username = models.CharField(db_column='Username', unique=True, max_length=15)  # Field name made lowercase.
     password = models.CharField(db_column='Password', max_length=15)  # Field name made lowercase.
 
@@ -20,8 +19,7 @@ class Administrator(models.Model):
 
 
 class Claimer(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    personid = models.ForeignKey('Person', models.DO_NOTHING, db_column='PersonID')  # Field name made lowercase.
+    id = models.OneToOneField('Person', models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
     dateclaimed = models.DateField(db_column='DateClaimed')  # Field name made lowercase.
     timeclaimed = models.TimeField(db_column='TimeClaimed')  # Field name made lowercase.
 
@@ -53,19 +51,23 @@ class Location(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=100)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    closestaddress = models.CharField(db_column='ClosestAddress', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    streetaddress = models.CharField(db_column='StreetAddress', max_length=50)  # Field name made lowercase.
+    city = models.CharField(db_column='City', max_length=50)  # Field name made lowercase.
+    state = models.CharField(db_column='State', max_length=50)  # Field name made lowercase.
+    zipcode = models.IntegerField(db_column='Zipcode')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'Location'
 
 
-class Lostitemreport(models.Model):
+class Lostitem(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     datereported = models.DateField(db_column='DateReported')  # Field name made lowercase.
     timereported = models.TimeField(db_column='TimeReported')  # Field name made lowercase.
     administratorid = models.ForeignKey(Administrator, models.DO_NOTHING, db_column='AdministratorID')  # Field name made lowercase.
     reporterid = models.ForeignKey('Person', models.DO_NOTHING, db_column='ReporterID')  # Field name made lowercase.
+    claimerid = models.ForeignKey(Claimer, models.DO_NOTHING, db_column='ClaimerID')  # Field name made lowercase.
     itemid = models.ForeignKey(Item, models.DO_NOTHING, db_column='ItemID')  # Field name made lowercase.
     locationid = models.ForeignKey(Location, models.DO_NOTHING, db_column='LocationID')  # Field name made lowercase.
     isclaimed = models.CharField(db_column='IsClaimed', max_length=1)  # Field name made lowercase.
@@ -73,7 +75,7 @@ class Lostitemreport(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'LostItemReport'
+        db_table = 'LostItem'
 
 
 class Person(models.Model):
@@ -82,7 +84,10 @@ class Person(models.Model):
     lastname = models.CharField(db_column='LastName', max_length=15)  # Field name made lowercase.
     email = models.CharField(db_column='Email', max_length=30)  # Field name made lowercase.
     phone = models.CharField(db_column='Phone', max_length=15)  # Field name made lowercase.
-    address = models.CharField(db_column='Address', max_length=30)  # Field name made lowercase.
+    streetaddress = models.CharField(db_column='StreetAddress', max_length=50)  # Field name made lowercase.
+    city = models.CharField(db_column='City', max_length=50)  # Field name made lowercase.
+    state = models.CharField(db_column='State', max_length=50)  # Field name made lowercase.
+    zipcode = models.IntegerField(db_column='Zipcode')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -211,4 +216,3 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
-
