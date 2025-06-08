@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import * as ColorUtil from './utils/colors' 
-import './App.css'
+import * as ColorUtil from '../utils/colors' 
+import '../styles/App.css'
 
 function App() {
     const [bgColor, setBgColor] = useState(null)
@@ -19,19 +19,12 @@ function App() {
     }
 
     return (
-        <div className="fullscreen-container" 
-            style={{
-                padding: '25px', 
-                backgroundColor: 'rgb(35, 35, 35)'
-            }}>
-            
+        <div className="container"> 
             <button onClick={handleColorButtonClick}
-                    className="custom-button"
+                    className="button"
                     style={{
                         height: '100px',
                         width: '400px',
-                        margin: '0 auto',
-                        display: 'block',
                         ...(bgColor && { backgroundColor: bgColor })
                     }}>
                 Console Log Test
