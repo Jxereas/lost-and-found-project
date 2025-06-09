@@ -1,17 +1,21 @@
 .sidebar {
   width: 240px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* this pushes logout to bottom */
+  padding: 20px;
+  box-sizing: border-box;
   background-color: #1f1f1f;
   color: white;
-  padding: 20px;
-  height: 100vh;
-  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-content {
+  flex-grow: 1;                 /* This takes up all remaining space */
 }
 
 .sidebar-title {
-  font-size: 1.6rem;
   margin-bottom: 20px;
-  border-bottom: 1px solid #444;
-  padding-bottom: 10px;
 }
 
 .sidebar-nav {
@@ -21,26 +25,36 @@
 }
 
 .sidebar-nav li {
-  margin: 16px 0;
+  padding: 10px 0;
   cursor: pointer;
-  transition: color 0.2s ease;
+  border-radius: 5px;
+  padding-left: 10px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar-nav li:hover {
-  color: #4caf50;
+    background-color: #2c2c2c;
+    color: #4CAF50;
+}
+
+.sidebar-button:hover {
+  background-color: #4CAF50; /* green hover */
+    color: #4CAF50;
 }
 
 .logout-button {
+  width: 100%;
+  padding: 10px;
   background-color: #d9534f;
   color: white;
   border: none;
-  padding: 10px;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 20px;
   transition: background-color 0.2s ease;
+  align-self: stretch;
 }
 
 .logout-button:hover {
   background-color: #c9302c;
 }
+
