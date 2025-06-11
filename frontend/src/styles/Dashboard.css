@@ -9,6 +9,12 @@
   flex: 1;
   padding: 40px;
   color: #333;
+    transition: margin-left 0.3s ease;
+}
+
+.dashboard-main.sidebar-collapsed {
+    margin-left: -200px; 
+    /* move over when sidebar is collapsed by sidebar width minus the toggle button width */
 }
 
 .dashboard-main h1 {
@@ -22,4 +28,3 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-top: 30px;
 }
-
