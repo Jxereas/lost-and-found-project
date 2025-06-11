@@ -1,16 +1,19 @@
 .sidebar {
-  position: relative;
   width: 240px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   /* this pushes logout to bottom */
-  padding: 20px;
   box-sizing: border-box;
   background-color: #1f1f1f;
   color: white;
   transition: transform 0.3s ease;
+}
+
+/* Collapsed state styles */
+.sidebar.collapsed {
+  transform: translateX(-100%);
 }
 
 .sidebar-content {
@@ -18,14 +21,59 @@
   /* This takes up all remaining space */
 }
 
+.sidebar-header {
+  display: flex;
+  align-items: center;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 .sidebar-title {
-  margin-bottom: 20px;
+  margin: 0px;
+    height: 37px;
+    display:flex;
+    justify-content: 'center';
+        align-content: 'center';
+}
+
+/* Collapse toggle button */
+.collapse-toggle {
+    display: flex;
+  right: 0px;
+  width: 40px;
+  height: 40px;
+  background-color: #1f1f1f;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.collapse-arrow {
+    transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.collapse-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.sidebar.collapsed .collapse-toggle {
+  transform: translateX(100%);
 }
 
 .sidebar-nav {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-left: 20px;
+    margin-right: 20px;
 }
 
 .sidebar-nav li {
@@ -43,14 +91,7 @@
   color: #4caf50;
 }
 
-.sidebar-button:hover {
-  background-color: #4caf50;
-  /* green hover */
-  color: #4caf50;
-}
-
 .logout-button {
-  width: 100%;
   padding: 10px;
   background-color: #d9534f;
   color: white;
@@ -58,35 +99,10 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  align-self: stretch;
+    margin: 20px;
+    box-sizing: border-box;
 }
 
 .logout-button:hover {
   background-color: #c9302c;
-}
-
-/* Collapsed state styles */
-.sidebar.collapsed {
-  transform: translateX(-100%);
-}
-
-/* Collapse toggle button */
-.collapse-toggle {
-  position: absolute;
-  top: 0px;
-  right: 0;
-  width: 40px;
-  height: 40px;
-  background-color: #1f1f1f;
-  color: white;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  margin-bottom: 20px;
-  align-self: flex-start;
-  transition: transform 0.3s ease;
-}
-
-.sidebar.collapsed .collapse-toggle {
-  transform: translateX(100%);
 }
