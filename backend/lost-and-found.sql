@@ -16,8 +16,17 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Database creation for 'LostAndFoundProjectTest'
+--
+
+CREATE DATABASE IF NOT EXISTS LostAndFoundProjectTest;
+
+USE LostAndFoundProjectTest;
+
+--
 -- Table structure for table `Administrator`
 --
+
 
 DROP TABLE IF EXISTS `Administrator`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

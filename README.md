@@ -31,7 +31,8 @@ Before starting, ensure you have the following installed:
 
 1. Navigate to the backend folder and create virtual Python environment:
 
-    Linux:
+   Linux:
+
    ```bash
    cd backend
    python3 -m venv .venv
@@ -39,9 +40,10 @@ Before starting, ensure you have the following installed:
    ```
 
    Windows:
+
    ```bash
    cd backend
-   python3 -m venv .venv
+   python -m venv .venv
    source .venv/Scripts/activate
    ```
 
@@ -51,7 +53,7 @@ Before starting, ensure you have the following installed:
    pip install -r requirements.txt
    ```
 
-3. Create a .env file in the backend/ directory with the following contents and modify your username and password:
+3. Create a file named .env in the backend/ directory with the following contents and modify your username and password this is in the .gitignore so much sure it is named correctly so no one sees sensitive information:
 
    ```ini
    MYSQL_NAME=LostAndFoundProjectTest
@@ -61,14 +63,13 @@ Before starting, ensure you have the following installed:
    MYSQL_PORT=3306
    ```
 
-4. Add the .env to your .gitignore so that no one sees your password or username when you push to the repository.
-5. Import the existing database if desired to your MySQL server:
+4. Import the existing database if desired to your MySQL server:
 
    ```bash
    mysql -u your_mysql_username -p < lost-and-found.sql
    ```
 
-6. Run the django server and make sure everything is working:
+5. Run the django server and make sure everything is working:
 
    ```bash
    python manage.py runserver
@@ -116,39 +117,3 @@ Open two terminal windows or tabs:
    ```
 
 3. Visit http://localhost:5173 to use the application.
-
----
-
-## Gitignore Template (optional)
-
-Here are the recommended entries to include in your `.gitignore` file for this project:
-
-    # Virtual environment (Python package installations)
-    .venv/
-    venv/
-    env/
-
-    #Python cache files
-    __pycache__/
-    *.py[cod]
-    *.pyo
-
-    # Django secret / env file
-    .env
-
-    # Node dependencies
-    node_modules/
-
-    # Vite build output
-    dist/
-
-    # VSCode
-    .vscode/
-
-    # JetBrains / PyCharm
-    .idea/
-
-    # Coverage reports
-    coverage/
-    *.log
-    *.tmp
