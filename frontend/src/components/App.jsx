@@ -12,22 +12,30 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<SearchLostItems />} />
-                <Route path="/search-results" element={<SearchLostItemsResults />} />
+                <Route path="/" element={<Login setAdminInfo={setAdminInfo} adminInfo={adminInfo} />} />
+                <Route path="/dashboard"
+                    element={
+                        <ProtectedRoute isAuthenticated={!!adminInfo}>
+                            <Dashboard setAdminInfo={setAdminInfo} adminInfo={adminInfo}/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route path="/lost-items-search"
+                    element={
+                        <ProtectedRoute isAuthenticated={!!adminInfo}>
+                            <SearchLostItems setAdminInfo={setAdminInfo} adminInfo={adminInfo}/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route path="/lost-items-search-results"
+                    element={
+                        <ProtectedRoute isAuthenticated={!!adminInfo}>
+                            <SearchLostItemsResults setAdminInfo={setAdminInfo} adminInfo={adminInfo}/>
+                        </ProtectedRoute>
+                    }
+                />
             </Routes>
         </Router>
-        // <Router>
-        //     <Routes>
-        //         <Route path="/" element={<Login setAdminInfo={setAdminInfo} adminInfo={adminInfo} />} />
-        //         <Route path="/dashboard"
-        //             element={
-        //                 <ProtectedRoute isAuthenticated={!!adminInfo}>
-        //                     <Dashboard setAdminInfo={setAdminInfo} adminInfo={adminInfo}/>
-        //                 </ProtectedRoute>
-        //             }
-        //         />
-        //     </Routes>
-        // </Router>
     );
 }
 
