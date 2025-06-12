@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import json
-from .models import Administrator, Tag, Location
+from .models import Administrator, Tag, Location, Lostitem
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -75,3 +75,81 @@ def getTags(request):
 
     tags = list(Tag.objects.values_list("name", flat=True).distinct())
     return JsonResponse({"tags": tags})
+
+@csrf_exempt
+def searchLostItems(request): 
+    if request.method != "POST":
+        return JsonResponse({"error": "POST method required"}, status=400)
+
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    item_name = data.get("itemName", "")
+    tags = data.get("tags", [])
+    location = data.get("location", "")
+    reporter_first = data.get("reporterFirstName", "")
+    reporter_last = data.get("reporterLastName", "")
+    claimer_first = data.get("claimerFirstName", "")
+    claimer_last = data.get("claimerLastName", "")
+    reported_start = data.get("reportedStartDate", "")
+    reported_end = data.get("reportedEndDate", "")
+    claimed_start = data.get("claimedStartDate", "")
+    claimed_end = data.get("claimedEndDate", "")
+
+    lost_items = Lostitem.objects.select_related(
+        "itemid", "locationid", "reporterid__personid", "claimerid__personid"
+    ).all()
+
+    if item_name:
+        lost_items = lost_items.filter(itemid__name__icontains=item_name)
+
+    if location:
+        lost_items = lost_items.filter(locationid__buildingname=location)
+
+    if tags:
+        lost_items = lost_items.filter(itemid__itemtag__tagid__name__in=tags).distinct()
+
+    if reporter_first:
+        lost_items = lost_items.filter(reporterid__personid__firstname__icontains=reporter_first)
+    if reporter_last:
+        lost_items = lost_items.filter(reporterid__personid__lastname__icontains=reporter_last)
+
+    if claimer_first:
+        lost_items = lost_items.filter(claimerid__personid__firstname__icontains=claimer_first)
+    if claimer_last:
+        lost_items = lost_items.filter(claimerid__personid__lastname__icontains=claimer_last)
+
+    if reported_start:
+        lost_items = lost_items.filter(reporterid__datereported__gte=reported_start)
+    if reported_end:
+        lost_items = lost_items.filter(reporterid__datereported__lte=reported_end)
+
+    if claimed_start:
+        lost_items = lost_items.filter(claimerid__dateclaimed__gte=claimed_start)
+    if claimed_end:
+        lost_items = lost_items.filter(claimerid__dateclaimed__lte=claimed_end)
+
+    results = []
+    for item in lost_items:
+        results.append({
+            "itemName": item.itemid.name,
+            "description": item.itemid.description,
+            "color": item.itemid.color,
+            "location": item.locationid.buildingname,
+            "reporter": {
+                "firstName": item.reporterid.personid.firstname,
+                "lastName": item.reporterid.personid.lastname,
+                "dateReported": item.reporterid.datereported.isoformat(),
+            },
+            "claimer": {
+                "firstName": item.claimerid.personid.firstname,
+                "lastName": item.claimerid.personid.lastname,
+                "dateClaimed": item.claimerid.dateclaimed.isoformat(),
+            },
+            "isClaimed": item.isclaimed,
+        })
+
+    return JsonResponse({"results": results})
+
