@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import '../styles/Login.css'
+import {useNavigate} from 'react-router-dom'
 
 function Login({ setAdminInfo, adminInfo }) {
+  const navigate = useNavigate()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -25,6 +27,7 @@ function Login({ setAdminInfo, adminInfo }) {
 
       setAdminInfo(data);
       setError('');
+      navigate('/dashboard')
     } catch (err) {
       setError(err.message);
       setAdminInfo(null);

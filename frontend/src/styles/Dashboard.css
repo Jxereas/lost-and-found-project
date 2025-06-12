@@ -1,0 +1,30 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f4f4f4;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 40px;
+  color: #333;
+    transition: margin-left 0.3s ease;
+}
+
+.dashboard-main.sidebar-collapsed {
+    margin-left: -200px; 
+    /* move over when sidebar is collapsed by sidebar width minus the toggle button width */
+}
+
+.dashboard-main h1 {
+  margin-bottom: 10px;
+}
+
+.dashboard-landing-card {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
