@@ -177,6 +177,7 @@ CREATE TABLE `LostItem` (
   `LocationID` int NOT NULL,
   `IsClaimed` enum('Y','N') NOT NULL,
   `Notes` varchar(255) DEFAULT NULL,
+  `LastSeen` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `AdministratorID` (`AdministratorID`),
   KEY `ReporterID` (`ReporterID`),

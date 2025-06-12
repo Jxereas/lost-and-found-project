@@ -1,6 +1,6 @@
 import "../styles/Sidebar.css";
-import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link, useNavigate } from "react-router-dom";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 function Sidebar({ collapsed, setCollapsed, setAdminInfo }) {
@@ -27,11 +27,11 @@ function Sidebar({ collapsed, setCollapsed, setAdminInfo }) {
           </button>
         </div>
         <ul className="sidebar-nav">
-          <li>Home</li>
-          <li>Add Lost Item</li>
-          <li>Edit Lost Item</li>
-          <li>View Reports</li>
-          <li>Summary</li>
+          <li><Link to="/dashboard">Home</Link></li>
+          <li><Link to="/add">Add Lost Item</Link></li>
+          <li><Link to="/edit">Edit Lost Item</Link></li>
+          <li><Link to="/reports">View Reports</Link></li>
+          <li><Link to="/summary">Summary</Link></li>
         </ul>
       </div>
 

@@ -72,7 +72,7 @@ class Lostitem(models.Model):
     locationid = models.ForeignKey(Location, models.DO_NOTHING, db_column='LocationID')  # Field name made lowercase.
     isclaimed = models.CharField(db_column='IsClaimed', max_length=1)  # Field name made lowercase.
     notes = models.CharField(db_column='Notes', max_length=255, blank=True, null=True)  # Field name made lowercase.
-
+    last_seen = models.CharField(db_column='LastSeen', max_length=100, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'LostItem'

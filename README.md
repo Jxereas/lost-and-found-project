@@ -106,6 +106,9 @@ Open two terminal windows or tabs:
    ```bash
    cd backend
    source .venv/bin/activate
+   pip install djangorestframework
+   python manage.py makemigrations
+   python manage.py migrate
    python manage.py runserver
    ```
 

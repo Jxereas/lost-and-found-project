@@ -3,6 +3,7 @@ from django.http import JsonResponse
 import json
 from .models import Administrator
 from django.views.decorators.csrf import csrf_exempt
+from .serializers import LostItemCreateSerializer
 
 @csrf_exempt
 def loginView(request):
@@ -51,5 +52,20 @@ def loginView(request):
                 'Zipcode': admin.id.zipcode,
             }
         })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+@csrf_exempt
+def add_lost_item(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST requests allowed'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        serializer = LostItemCreateSerializer(data=data)
+        if serializer.is_valid():
+            lost_item = serializer.save()
+            return JsonResponse({'success': True, 'lost_item_id': lost_item.id})
+        else:
+            return JsonResponse({'error': serializer.errors}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
