@@ -26,6 +26,8 @@ function Login({ setAdminInfo, adminInfo }) {
       }
 
       setAdminInfo(data);
+      localStorage.setItem("adminInfo", JSON.stringify(data));
+
       setError('');
       navigate('/dashboard')
     } catch (err) {

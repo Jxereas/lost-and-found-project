@@ -6,8 +6,9 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 function Sidebar({ collapsed, setCollapsed, setAdminInfo }) {
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     setAdminInfo(null);
+    localStorage.removeItem("adminInfo");
     navigate("/");
   };
 
@@ -29,7 +30,9 @@ function Sidebar({ collapsed, setCollapsed, setAdminInfo }) {
         <ul className="sidebar-nav">
           <li>Home</li>
           <li>Add Lost Item</li>
-          <li>Edit Lost Item</li>
+          <li>
+            <a href="/edit-item">Edit Lost Item</a>
+          </li>
           <li>View Reports</li>
           <li>Summary</li>
         </ul>
