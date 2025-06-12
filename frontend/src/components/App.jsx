@@ -1,15 +1,21 @@
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
-import { useState } from 'react'
-import Login from './Login'
-import Dashboard from './Dashboard'
-import SearchLostItems from './SearchLostItems'
-import ProtectedRoute from '../ProtectedRoute'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import Login from "./Login";
+import Dashboard from "./Dashboard";
+import SearchLostItems from "./SearchLostItems";
+import SearchLostItemsResults from "./SearchLostItemsResults";
+import ProtectedRoute from "../ProtectedRoute";
 
 function App() {
-    const [adminInfo, setAdminInfo] = useState(null)
+    const [adminInfo, setAdminInfo] = useState(null);
 
     return (
-        <SearchLostItems/>
+        <Router>
+            <Routes>
+                <Route path="/" element={<SearchLostItems />} />
+                <Route path="/search-results" element={<SearchLostItemsResults />} />
+            </Routes>
+        </Router>
         // <Router>
         //     <Routes>
         //         <Route path="/" element={<Login setAdminInfo={setAdminInfo} adminInfo={adminInfo} />} />
@@ -22,7 +28,7 @@ function App() {
         //         />
         //     </Routes>
         // </Router>
-    )
+    );
 }
 
-export default App
+export default App;

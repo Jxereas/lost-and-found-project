@@ -35,6 +35,19 @@
   padding-bottom: 6px;
 }
 
+.search-group .react-select-container .react-select__control {
+  min-height: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.search-group .react-select-container .react-select__value-container {
+  padding: 0 8px;
+}
+
 .search-group input,
 .search-group select,
 .search-group .css-13cymwt-control { /* react-select default class */

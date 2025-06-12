@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/SearchLostItems.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { useNavigate } from "react-router-dom";
 
 function SearchLostItems() {
     const [itemName, setItemName] = useState("");
@@ -20,6 +21,7 @@ function SearchLostItems() {
     const [tags, setTags] = useState([]);
 
     const animatedComponents = makeAnimated();
+    const navigate = useNavigate();
 
     const tagOptions = tags.map((tag) => ({ value: tag, label: tag }));
     const locationOptions = [
@@ -40,19 +42,32 @@ function SearchLostItems() {
     }, []);
 
     const handleSearch = () => {
-        console.log({
+        const searchPayload = {
             itemName,
+            tags: selectedTags.map((tag) => tag.value),
+            location: selectedLocation ? selectedLocation.value : "",
             reporterFirstName,
             reporterLastName,
             claimerFirstName,
             claimerLastName,
-            selectedLocation,
-            selectedTags,
             reportedStartDate,
             reportedEndDate,
             claimedStartDate,
             claimedEndDate,
-        });
+        };
+
+        fetch("http://localhost:8000/api/search-lost-items/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(searchPayload),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                navigate("/search-results", { state: { results: data.results } });
+            })
+            .catch((error) => console.error("Search error:", error));
     };
 
     return (
@@ -71,6 +86,8 @@ function SearchLostItems() {
                     <Select
                         components={animatedComponents}
                         options={locationOptions}
+                        classNamePrefix="react-select"
+                        className="react-select-container"
                         value={selectedLocation}
                         onChange={setSelectedLocation}
                         placeholder="Select a location"
@@ -80,6 +97,8 @@ function SearchLostItems() {
                         components={animatedComponents}
                         isMulti
                         options={tagOptions}
+                        classNamePrefix="react-select"
+                        className="react-select-container"
                         value={selectedTags}
                         onChange={setSelectedTags}
                         placeholder="Select tags"
@@ -142,10 +161,11 @@ function SearchLostItems() {
                     />
                 </div>
             </div>
-            <button className="search-button" onClick={handleSearch}>Search</button>
+            <button className="search-button" onClick={handleSearch}>
+                Search
+            </button>
         </div>
     );
 }
 
 export default SearchLostItems;
-
