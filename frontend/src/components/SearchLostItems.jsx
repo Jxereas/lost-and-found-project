@@ -1,7 +1,7 @@
 // SearchLostItems.jsx
 import React, { useEffect, useState } from "react";
 import "../styles/SearchLostItems.css";
-import Sidebar from './Sidebar';
+import Sidebar from "./Sidebar";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,7 @@ function SearchLostItems({ setAdminInfo, adminInfo }) {
     const [reportedStartDate, setReportedStartDate] = useState("");
     const [reportedEndDate, setReportedEndDate] = useState("");
     const [claimedStartDate, setClaimedStartDate] = useState("");
+    const [claimStatus, setClaimStatus] = useState(null);
     const [claimedEndDate, setClaimedEndDate] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
     const [locations, setLocations] = useState([]);
@@ -31,6 +32,11 @@ function SearchLostItems({ setAdminInfo, adminInfo }) {
         { value: "", label: "All Locations" },
         ...locations.map((loc) => ({ value: loc, label: loc })),
     ];
+    const claimStatusOptions = [
+        { value: "", label: "All Items" },
+        { value: "Y", label: "Claimed Items" },
+        { value: "N", label: "Unclaimed Items" },
+    ]
 
     useEffect(() => {
         fetch("http://localhost:8000/api/locations/")
@@ -57,6 +63,7 @@ function SearchLostItems({ setAdminInfo, adminInfo }) {
             reportedEndDate,
             claimedStartDate,
             claimedEndDate,
+            claimStatus: claimStatus ? claimStatus.value : "",
         };
 
         fetch("http://localhost:8000/api/search-lost-items/", {
@@ -68,7 +75,9 @@ function SearchLostItems({ setAdminInfo, adminInfo }) {
         })
             .then((res) => res.json())
             .then((data) => {
-                navigate("/lost-items-search-results", { state: { results: data.results } });
+                navigate("/lost-items-search-results", {
+                    state: { results: data.results },
+                });
             })
             .catch((error) => console.error("Search error:", error));
     };
@@ -80,7 +89,9 @@ function SearchLostItems({ setAdminInfo, adminInfo }) {
                 collapsed={sidebarCollapsed}
                 setAdminInfo={setAdminInfo}
             />
-            <div className={`search-main ${sidebarCollapsed ? "sidebar-collapsed": ""}`}>
+            <div
+                className={`search-main ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}
+            >
                 <h2 className="search-title">Search Lost Items</h2>
                 <div className="group-container">
                     <div className="search-group">
@@ -112,6 +123,15 @@ function SearchLostItems({ setAdminInfo, adminInfo }) {
                             onChange={setSelectedTags}
                             placeholder="Select tags"
                         />
+                        <Select
+                            components={animatedComponents}
+                            value={claimStatus}
+                            onChange={setClaimStatus}
+                            classNamePrefix="react-select"
+                            className="react-select-container"
+                            placeholder="Select a claim status"
+                            options={claimStatusOptions}
+                        />
                     </div>
 
                     <div className="search-group">
@@ -121,6 +141,7 @@ function SearchLostItems({ setAdminInfo, adminInfo }) {
                             placeholder="First Name"
                             value={reporterFirstName}
                             onChange={(e) => setReporterFirstName(e.target.value)}
+
                         />
                         <input
                             type="text"

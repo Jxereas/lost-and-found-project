@@ -3,7 +3,7 @@ from django.http import JsonResponse
 import json
 from .models import Administrator, Tag, Location, Lostitem
 from django.views.decorators.csrf import csrf_exempt
-
+from django.db.models import Q, F, FilteredRelation
 
 @csrf_exempt
 def loginView(request):
@@ -97,9 +97,11 @@ def searchLostItems(request):
     reported_end = data.get("reportedEndDate", "")
     claimed_start = data.get("claimedStartDate", "")
     claimed_end = data.get("claimedEndDate", "")
+    claim_status = data.get("claimStatus", "")
 
+    # Only use select_related for guaranteed non-null relationships
     lost_items = Lostitem.objects.select_related(
-        "itemid", "locationid", "reporterid__personid", "claimerid__personid"
+        "itemid", "locationid", "reporterid__personid"
     ).all()
 
     if item_name:
@@ -116,23 +118,42 @@ def searchLostItems(request):
     if reporter_last:
         lost_items = lost_items.filter(reporterid__personid__lastname__icontains=reporter_last)
 
+    print(claim_status)
+
+    # Skip these filters if claimerid is nullable
+    if claim_status == "Y":
+        lost_items = lost_items.filter(isclaimed='Y')
+    elif claim_status == "N":
+        lost_items = lost_items.filter(isclaimed='N')
     if claimer_first:
         lost_items = lost_items.filter(claimerid__personid__firstname__icontains=claimer_first)
     if claimer_last:
         lost_items = lost_items.filter(claimerid__personid__lastname__icontains=claimer_last)
+    if claimed_start:
+        lost_items = lost_items.filter(claimerid__dateclaimed__gte=claimed_start)
+    if claimed_end:
+        lost_items = lost_items.filter(claimerid__dateclaimed__lte=claimed_end)
 
     if reported_start:
         lost_items = lost_items.filter(reporterid__datereported__gte=reported_start)
     if reported_end:
         lost_items = lost_items.filter(reporterid__datereported__lte=reported_end)
 
-    if claimed_start:
-        lost_items = lost_items.filter(claimerid__dateclaimed__gte=claimed_start)
-    if claimed_end:
-        lost_items = lost_items.filter(claimerid__dateclaimed__lte=claimed_end)
-
     results = []
     for item in lost_items:
+        if item.claimerid_id:
+            claimer_data = {
+                "firstName": item.claimerid.personid.firstname,
+                "lastName": item.claimerid.personid.lastname,
+                "dateClaimed": item.claimerid.dateclaimed.isoformat(),
+            }
+        else:
+            claimer_data = {
+                "firstName": None,
+                "lastName": None,
+                "dateClaimed": None,
+            }
+
         results.append({
             "itemName": item.itemid.name,
             "description": item.itemid.description,
@@ -143,13 +164,8 @@ def searchLostItems(request):
                 "lastName": item.reporterid.personid.lastname,
                 "dateReported": item.reporterid.datereported.isoformat(),
             },
-            "claimer": {
-                "firstName": item.claimerid.personid.firstname,
-                "lastName": item.claimerid.personid.lastname,
-                "dateClaimed": item.claimerid.dateclaimed.isoformat(),
-            },
+            "claimer": claimer_data,
             "isClaimed": item.isclaimed,
         })
 
     return JsonResponse({"results": results})
-

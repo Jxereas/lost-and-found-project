@@ -43,10 +43,11 @@ function SearchResultsPage({ setAdminInfo, adminInfo }) {
                                     <strong>Reported by:</strong> {item.reporter.firstName}{" "}
                                     {item.reporter.lastName} on {item.reporter.dateReported}
                                 </p>
+                                {item.claimer.firstName && item.claimer.lastName && item.claimer.dateClaimed ? (
                                 <p>
                                     <strong>Claimed by:</strong> {item.claimer.firstName}{" "}
                                     {item.claimer.lastName} on {item.claimer.dateClaimed}
-                                </p>
+                                </p>) : null}
                                 <p>
                                     <strong>Is Claimed:</strong>{" "}
                                     {item.isClaimed === "Y" ? "Yes" : "No"}
