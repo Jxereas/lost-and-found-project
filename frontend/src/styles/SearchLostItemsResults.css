@@ -1,0 +1,77 @@
+.search-results-container {
+  display: flex;
+  height: 100%;
+  background-color: #f4f4f4;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.search-results-main {
+  padding: 40px;
+  margin: 0 auto;
+  width: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.search-results-main.sidebar-collapsed {
+  margin-left: -200px;
+  /* move over when sidebar is collapsed by sidebar width minus the toggle button width */
+}
+
+.search-results-main h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.search-results-main button {
+  width: fit-content;
+  padding: 10px 16px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-results-main button:hover {
+  background-color: #43a047;
+}
+
+.results-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.result-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+    list-style-type: none;
+}
+
+.result-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  color: #333;
+    display: flex;
+    align-content: center;
+    text-align: center;
+}
+
+.result-card p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #555;
+}

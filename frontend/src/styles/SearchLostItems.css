@@ -1,0 +1,98 @@
+.search-container {
+  display: flex;
+  height: 100%;
+  background-color: #f4f4f4;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.search-main {
+  padding: 40px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+    width: 100%;
+    transition: margin-left 0.3s ease;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.search-main.sidebar-collapsed {
+    margin-left: -200px; 
+    /* move over when sidebar is collapsed by sidebar width minus the toggle button width */
+}
+
+.search-title {
+  margin: 0;
+}
+
+.group-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.search-group {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.search-group-title {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.search-group .react-select-container .react-select__control {
+  min-height: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.search-group .react-select-container .react-select__value-container {
+  padding: 0 8px;
+}
+
+.search-group input,
+.search-group select,
+.search-group .css-13cymwt-control {
+  /* react-select default class */
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  transition: border-color 0.2s;
+}
+
+.search-group input:focus,
+.search-group select:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+.search-button {
+  padding: 12px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.search-button:hover {
+  background-color: #43a047;
+}
