@@ -36,20 +36,20 @@ def loginView(request):
         if admin.password != password:
             return JsonResponse({'error': 'Invalid password.'}, status=401)
 
-        request.session['admin_id'] = admin.id_id
+        request.session['admin_id'] = admin.personid.id
 
         return JsonResponse({
-            'id': admin.id_id, 
+            'id': admin.personid.id, 
             'username': admin.username,
             'person': {
-                'First Name': admin.id.firstname,
-                'Last Name': admin.id.lastname,
-                'Email': admin.id.email,
-                'Phone Number': admin.id.phone,
-                'Street Address': admin.id.streetaddress,
-                'City': admin.id.city,
-                'State': admin.id.state,
-                'Zipcode': admin.id.zipcode,
+                'First Name': admin.personid.firstname,
+                'Last Name': admin.personid.lastname,
+                'Email': admin.personid.email,
+                'Phone Number': admin.personid.phone,
+                'Street Address': admin.personid.streetaddress,
+                'City': admin.personid.city,
+                'State': admin.personid.state,
+                'Zipcode': admin.personid.zipcode,
             }
         })
     except Exception as e:
