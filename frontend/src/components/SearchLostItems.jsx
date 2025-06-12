@@ -1,11 +1,14 @@
 // SearchLostItems.jsx
 import React, { useEffect, useState } from "react";
 import "../styles/SearchLostItems.css";
+import Sidebar from './Sidebar';
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useNavigate } from "react-router-dom";
 
-function SearchLostItems() {
+function SearchLostItems({ setAdminInfo, adminInfo }) {
+    const [sidebarCollapsed, sidebarSetCollapsed] = useState(false);
+
     const [itemName, setItemName] = useState("");
     const [reporterFirstName, setReporterFirstName] = useState("");
     const [reporterLastName, setReporterLastName] = useState("");
