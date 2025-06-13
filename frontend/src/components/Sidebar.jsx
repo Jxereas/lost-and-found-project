@@ -36,7 +36,7 @@ function Sidebar({ collapsed, setCollapsed, setAdminInfo }) {
                         <Link to="/dashboard">Home</Link>
                     </li>
                     <li>
-                        <Link to="/add-lost-item">Add Lost Item</Link>
+                        <Link to="/lost-items-add">Add Lost Item</Link>
                     </li>
                     <li>
                         <Link to="/edit-lost-item">Edit Lost Item</Link>
