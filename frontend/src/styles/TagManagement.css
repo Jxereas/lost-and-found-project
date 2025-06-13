@@ -1,0 +1,90 @@
+.tag-screen-container {
+  display: flex;
+  height: 100%;
+  background-color: #f4f4f4;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tag-screen-main {
+  display: flex;
+  flex-direction: column;
+    width: 100%;
+  gap: 15px;
+  padding: 40px;
+    transition: margin-left 0.3s ease;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.tag-screen-main.sidebar-collapsed {
+   margin-left: -200px; 
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+}
+
+input[type="text"],
+textarea {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+    box-sizing: border-box;
+  background-color: #fff;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  max-height: 200px;
+}
+
+.card button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.card button:hover {
+  background-color: #45a045;
+}
+
+.current-description {
+  color: #ccc;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.react-select-container {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+

@@ -45,6 +45,9 @@ function Sidebar({ collapsed, setCollapsed, setAdminInfo }) {
                         <Link to="/lost-items-search">Search Lost Items</Link>
                     </li>
                     <li>
+                        <Link to="/tag-management">Manage Tags</Link>
+                    </li>
+                    <li>
                         <Link to="/summary">Summary</Link>
                     </li>
                 </ul>
