@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import SearchLostItems from "./SearchLostItems";
 import SearchLostItemsResults from "./SearchLostItemsResults";
 import TagManagement from "./TagManagement";
+import AddLostItems from "./AddLostItems";
 import ProtectedRoute from "../ProtectedRoute";
 
 function App() {
@@ -52,6 +53,14 @@ function App() {
           element={
             <ProtectedRoute isAuthenticated={!!adminInfo}>
               <TagManagement setAdminInfo={setAdminInfo}/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/lost-items-add"
+          element={
+            <ProtectedRoute isAuthenticated={!!adminInfo}>
+              <AddLostItems adminInfo={adminInfo} setAdminInfo={setAdminInfo}/>
             </ProtectedRoute>
           }
         />

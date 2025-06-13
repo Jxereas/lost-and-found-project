@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import json
-from .models import Administrator, Tag, Location, Lostitem
+from django.utils import timezone
+from .models import Administrator, Tag, Location, Lostitem, Itemtag, Item, Reporter, Person
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q, F, FilteredRelation
 
@@ -233,3 +234,83 @@ def searchLostItems(request):
         })
 
     return JsonResponse({"results": results})
+
+@csrf_exempt
+def addLostItem(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Only POST requests allowed"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+
+        admin_id = data.get("adminId")
+        person_data = data.get("person")
+        location_data = data.get("location")
+        item_data = data.get("item")
+        tag_ids = data.get("tagIds", [])
+
+        if not (admin_id and person_data and location_data and item_data):
+            return JsonResponse({"error": "Missing required fields"}, status=400)
+
+        # Get or create Person
+        person, _ = Person.objects.get_or_create(
+            firstname=person_data["firstname"].strip(),
+            lastname=person_data["lastname"].strip(),
+            email=person_data["email"].strip(),
+            phone=person_data["phone"].strip(),
+            streetaddress=person_data["streetaddress"].strip(),
+            city=person_data["city"].strip(),
+            state=person_data["state"].strip(),
+            zipcode=person_data["zipcode"].strip()
+        )
+
+        # Create Reporter
+        now = timezone.localtime()
+        reporter = Reporter.objects.create(
+            personid=person,
+            datereported=now.date(),
+            timereported=now.time()
+        )
+
+        # Get or create Location
+        location, _ = Location.objects.get_or_create(
+            buildingname=location_data["buildingname"].strip(),
+            description=location_data["description"].strip(),
+            streetaddress=location_data["streetaddress"].strip(),
+            city=location_data["city"].strip(),
+            state=location_data["state"].strip(),
+            zipcode=location_data["zipcode"].strip()
+        )
+
+        # Get or create Item
+        item, _ = Item.objects.get_or_create(
+            name=item_data["name"].strip(),
+            color=item_data["color"].strip(),
+            description=item_data["description"].strip()
+        )
+
+        # Create LostItem
+        admin = Administrator.objects.get(personid=admin_id)
+        lost_item = Lostitem.objects.create(
+            administratorid=admin,
+            reporterid=reporter,
+            itemid=item,
+            locationid=location,
+            isclaimed='N',
+            notes=item_data.get("notes", "").strip()
+        )
+
+        # Link Tags
+        for tag_id in tag_ids:
+            tag = Tag.objects.get(id=tag_id)
+            Itemtag.objects.create(tagid=tag, itemid=item)
+
+        return JsonResponse({"message": "Lost item successfully logged."})
+
+    except Administrator.DoesNotExist:
+        return JsonResponse({"error": "Invalid Administrator ID"}, status=404)
+    except Tag.DoesNotExist:
+        return JsonResponse({"error": "One or more tags not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+

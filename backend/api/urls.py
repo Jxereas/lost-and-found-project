@@ -9,4 +9,5 @@ urlpatterns = [
     path('tags/create/', views.createTag, name='create tag'),
     path('tags/update/', views.updateTag, name='update tag'),
     path('search-lost-items/', views.searchLostItems, name='search lost items'),
+    path('lost-items/add/', views.addLostItem, name='Add lost item'),
 ]
