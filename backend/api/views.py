@@ -77,6 +77,70 @@ def getTags(request):
     return JsonResponse({"tags": tags})
 
 @csrf_exempt
+def getTagsManagement(request):
+    if request.method != "GET":
+        return JsonResponse({"error": "Only GET requests allowed"}, status=405)
+
+    tags = Tag.objects.all().values("id", "name", "description")
+    return JsonResponse({"tags": list(tags)})
+
+@csrf_exempt
+def createTag(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Only POST requests allowed"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        name = data.get("name", "").strip()
+        description = data.get("description", "").strip()
+
+        if not name or not description:
+            return JsonResponse({"error": "Name and description are required"}, status=400)
+
+        if Tag.objects.filter(name=name).exists():
+            return JsonResponse({"error": "A tag with that name already exists"}, status=409)
+
+        Tag.objects.create(name=name, description=description)
+        return JsonResponse({"message": "Tag created successfully"})
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+@csrf_exempt
+def updateTag(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Only POST requests allowed"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        tag_id = data.get("id")
+        new_name = data.get("newName", "").strip()
+        new_description = data.get("newDescription", "").strip()
+
+        if not tag_id:
+            return JsonResponse({"error": "Tag ID is required"}, status=400)
+
+        try:
+            tag = Tag.objects.get(id=tag_id)
+        except Tag.DoesNotExist:
+            return JsonResponse({"error": "Tag not found"}, status=404)
+
+        if new_name and new_name != tag.name:
+            if Tag.objects.filter(name=new_name).exclude(id=tag_id).exists():
+                return JsonResponse({"error": "A tag with that new name already exists"}, status=409)
+            tag.name = new_name
+
+        if new_description:
+            tag.description = new_description
+
+        tag.save()
+        return JsonResponse({"message": "Tag updated successfully"})
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+
+@csrf_exempt
 def searchLostItems(request): 
     if request.method != "POST":
         return JsonResponse({"error": "POST method required"}, status=400)
