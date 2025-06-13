@@ -314,3 +314,126 @@ def addLostItem(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
+@csrf_exempt
+def lostItemsSummary(request):
+    if request.method != "GET":
+        return JsonResponse({"error": "Only GET requests allowed"}, status=405)
+
+    lost_items = Lostitem.objects.select_related(
+        "itemid", "reporterid__personid"
+    ).all()
+
+    result = []
+    for item in lost_items:
+        result.append({
+            "id": item.id,
+            "itemName": item.itemid.name,
+            "reporterName": f"{item.reporterid.personid.firstname} {item.reporterid.personid.lastname}",
+            "dateReported": str(item.reporterid.datereported),
+        })
+
+    return JsonResponse(result, safe=False)
+
+@csrf_exempt
+def editLostItem(request, lost_item_id):
+    # if request.method != "POST":
+    #     return JsonResponse({"error": "Only POST requests allowed"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        # Get LostItem instance
+        lost_item = Lostitem.objects.get(id=lost_item_id)
+
+        # === Update Reporter.Person ===
+        person_data = data.get("person", {})
+        person = lost_item.reporterid.personid
+        person.firstname = person_data.get("firstName", person.firstname)
+        person.lastname = person_data.get("lastName", person.lastname)
+        person.email = person_data.get("email", person.email)
+        person.phone = person_data.get("phone", person.phone)
+        person.streetaddress = person_data.get("streetAddress", person.streetaddress)
+        person.city = person_data.get("city", person.city)
+        person.state = person_data.get("state", person.state)
+        person.zipcode = person_data.get("zipcode", person.zipcode)
+        person.save()
+
+        # === Update Item ===
+        item_data = data.get("item", {})
+        item = lost_item.itemid
+        item.name = item_data.get("name", item.name)
+        item.color = item_data.get("color", item.color)
+        item.description = item_data.get("description", item.description)
+        item.save()
+
+        # === Update LostItem Notes ===
+        lost_item.notes = item_data.get("notes", lost_item.notes)
+        lost_item.save()
+
+        # === Update Location ===
+        location_data = data.get("location", {})
+        location = lost_item.locationid
+        location.buildingname = location_data.get("buildingName", location.buildingname)
+        location.description = location_data.get("description", location.description)
+        location.streetaddress = location_data.get("streetAddress", location.streetaddress)
+        location.city = location_data.get("city", location.city)
+        location.state = location_data.get("state", location.state)
+        location.zipcode = location_data.get("zipcode", location.zipcode)
+        location.save()
+
+        # === Remove Tags ===
+        tags_to_remove = data.get("tagsToRemove", [])  # list of tag IDs
+        for tag_id in tags_to_remove:
+            Itemtag.objects.filter(itemid=item.id, tagid=tag_id).delete()
+
+        return JsonResponse({"message": "Lost item updated successfully."})
+
+    except Lostitem.DoesNotExist:
+        return JsonResponse({"error": "Lost item not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+@csrf_exempt
+def getLostItemDetail(request, lost_item_id):
+    if request.method != "GET":
+        return JsonResponse({"error": "Only GET requests allowed"}, status=405)
+
+    try:
+        lost_item = Lostitem.objects.select_related(
+            "itemid", "reporterid__personid", "locationid"
+        ).get(id=lost_item_id)
+
+        tags = Itemtag.objects.filter(itemid=lost_item.itemid.id).select_related("tagid")
+
+        return JsonResponse({
+            "person": {
+                "firstName": lost_item.reporterid.personid.firstname,
+                "lastName": lost_item.reporterid.personid.lastname,
+                "email": lost_item.reporterid.personid.email,
+                "phone": lost_item.reporterid.personid.phone,
+                "streetAddress": lost_item.reporterid.personid.streetaddress,
+                "city": lost_item.reporterid.personid.city,
+                "state": lost_item.reporterid.personid.state,
+                "zipcode": lost_item.reporterid.personid.zipcode,
+            },
+            "item": {
+                "name": lost_item.itemid.name,
+                "color": lost_item.itemid.color,
+                "description": lost_item.itemid.description,
+                "notes": lost_item.notes,
+            },
+            "location": {
+                "buildingName": lost_item.locationid.buildingname,
+                "description": lost_item.locationid.description,
+                "streetAddress": lost_item.locationid.streetaddress,
+                "city": lost_item.locationid.city,
+                "state": lost_item.locationid.state,
+                "zipcode": lost_item.locationid.zipcode,
+            },
+            "tags": [
+            ]
+        })
+
+    except Lostitem.DoesNotExist:
+        return JsonResponse({"error": "Lost item not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

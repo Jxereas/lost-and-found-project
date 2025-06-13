@@ -10,4 +10,7 @@ urlpatterns = [
     path('tags/update/', views.updateTag, name='update tag'),
     path('search-lost-items/', views.searchLostItems, name='search lost items'),
     path('lost-items/add/', views.addLostItem, name='Add lost item'),
+    path("lost-items-summary/", views.lostItemsSummary, name='Lost item summary'),
+    path("lost-items/<int:lost_item_id>/edit/", views.editLostItem, name='Edit lost item'),
+    path("lost-items/<int:lost_item_id>/", views.getLostItemDetail, name="Get lost item detail"),
 ]

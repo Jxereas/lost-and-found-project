@@ -6,6 +6,7 @@ import SearchLostItems from "./SearchLostItems";
 import SearchLostItemsResults from "./SearchLostItemsResults";
 import TagManagement from "./TagManagement";
 import AddLostItems from "./AddLostItems";
+import EditLostItems from "./EditLostItems";
 import ProtectedRoute from "../ProtectedRoute";
 
 function App() {
@@ -61,6 +62,14 @@ function App() {
           element={
             <ProtectedRoute isAuthenticated={!!adminInfo}>
               <AddLostItems adminInfo={adminInfo} setAdminInfo={setAdminInfo}/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/lost-items-edit"
+          element={
+            <ProtectedRoute isAuthenticated={!!adminInfo}>
+              <EditLostItems adminInfo={adminInfo} setAdminInfo={setAdminInfo}/>
             </ProtectedRoute>
           }
         />

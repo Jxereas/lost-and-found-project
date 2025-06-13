@@ -1,0 +1,44 @@
+.edit-lost-item-container {
+  display: flex;
+  height: 100%;
+  background-color: #f4f4f4;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.edit-lost-item-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+  padding: 40px;
+  transition: margin-left 0.3s ease;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.edit-lost-item-main.sidebar-collapsed {
+  margin-left: -200px;
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.react-select-container {
+  margin-top: 8px;
+}
+
