@@ -5,6 +5,12 @@ It is built with **React (Vite)** for the frontend, **Django** for the backend, 
 
 ---
 
+## Overview
+
+This project provides an administrative interface for managing lost and found items, including item reporting, searching, updating records, and associating items with locations, reporters, claimers, and tags.
+
+---
+
 ## Technologies Used
 
 - React + Vite (Frontend)
@@ -117,3 +123,9 @@ Open two terminal windows or tabs:
    ```
 
 3. Visit http://localhost:5173 to use the application.
+
+---
+
+## Notes
+
+This project was originally developed as part of coursework at the University of Virginia.
